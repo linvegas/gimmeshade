@@ -1,0 +1,96 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+* { margin: 0; }
+
+body {
+  font-family: system-ui;
+}
+
+input, button {
+  font: inherit;
+  border: none;
+  border-radius: 0.25em;
+  padding: 0.25rem;
+}
+
+#main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.pannel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.2rem;
+  font-family: monospace;
+}
+
+dialog {
+  margin: auto;
+  top: 3rem;
+
+  opacity: 0;
+  transition: opacity 1s;
+
+  border: 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px 1px rgba(0,0,0,0.3);
+  background: darkslategray;
+  color: white;
+}
+
+dialog[open] {
+  opacity: 1;
+}
+
+.container {
+  margin-inline: auto;
+  width: min(100% - 3rem, 1500px);
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 999;
+
+  padding: 1rem;
+  width: 300px;
+  aspect-ratio: 1;
+
+  /* border: 2px solid white; */
+  border-radius: 1em;
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: -5px 5px 0 0 rgba(0, 0, 0, 0.8);
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.menu-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu input[type="text"],
+.menu input[type="number"] {
+  width: 100%;
+  font-size: 1.25rem;
+}
+
+.menu button {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
