@@ -68,7 +68,6 @@ dialog[open] {
   width: 300px;
   aspect-ratio: 1;
 
-  /* border: 2px solid white; */
   border-radius: 1em;
   background: rgba(0, 0, 0, 0.45);
   box-shadow: -5px 5px 0 0 rgba(0, 0, 0, 0.8);
