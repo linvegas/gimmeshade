@@ -1,6 +1,30 @@
 import { qSel, qAll } from "./utils";
 
-const APP = document.querySelector("main#main");
+const APP = qSel("main#main");
+
+/** @param {string} notification
+ *  @returns {void}
+ *  */
+function suddenNotify(notification) {
+  /** @type {HTMLDialogElement} prevDialog */
+  let prevDialog = document.querySelector("dialog");
+  if (document.body.contains(prevDialog)) {
+    prevDialog.close();
+    prevDialog.remove();
+  }
+
+  /** @type {HTMLDialogElement} dialog */
+  let dialog = document.createElement("dialog");
+
+  let notif = document.createTextNode(notification);
+  dialog.setAttribute("open", "true");
+  dialog.appendChild(notif);
+  APP.appendChild(dialog);
+  setTimeout(() => {
+    dialog.close();
+    dialog.remove();
+  }, 2000);
+}
 
 /** @param {string} color
  *  @param {number} percent
@@ -33,21 +57,11 @@ function colorShades(color, percent) {
   return "#" + RR + GG + BB;
 }
 
-function handlePannelClick(event) {
-  let colorhex = event.target.innerText;
-  navigator.clipboard.writeText(colorhex).then(() => {
-    suddenNotify(`${colorhex} copied!`);
-  });
-}
-
 function createPannel(color) {
   let pannel = document.createElement("div");
   let text = document.createTextNode(color);
-  // let spanText = document.createElement("span");
   pannel.setAttribute("class", "pannel");
   pannel.style.background = color;
-  // spanText.appendChild(text);
-  // pannel.appendChild(spanText);
   pannel.appendChild(text);
   return pannel;
 }
@@ -95,50 +109,35 @@ function generateShadePannels(colorlist) {
   });
 }
 
-/** @param {string} notification
- *  @returns {void}
- *  */
-function suddenNotify(notification) {
-  /** @type {HTMLDialogElement} prevDialog */
-  let prevDialog = document.querySelector("dialog");
-  if (document.body.contains(prevDialog)) {
-    prevDialog.close();
-    prevDialog.remove();
-  }
-
-  /** @type {HTMLDialogElement} dialog */
-  let dialog = document.createElement("dialog");
-
-  let notif = document.createTextNode(notification);
-  dialog.setAttribute("open", "true");
-  dialog.appendChild(notif);
-  APP.appendChild(dialog);
-  setTimeout(() => {
-    dialog.close();
-    dialog.remove();
-  }, 2000);
+function handlePannelClick(event) {
+  let colorhex = event.target.innerText;
+  navigator.clipboard.writeText(colorhex).then(() => {
+    suddenNotify(`${colorhex} copied!`);
+  });
 }
 
-function handleGenShades() {
-  const colorInput = document.querySelector('input[name="color"]');
-  const amountInput = document.querySelector('input[name="amount"]');
+function handleInputValues() {
+  const colorInput = qSel('input[name="color"]');
+  const amountInput = qSel('input[name="amount"]');
   let newColor = colorInput.value;
   let newAmount = amountInput.value;
   let colors = generateShadeList(newColor, newAmount);
+  return colors;
+}
+
+function handleGenShades() {
+  let colors = handleInputValues();
   generateShadePannels(colors);
 }
 
 function handleGenCss() {
-  const colorInput = document.querySelector('input[name="color"]');
-  const amountInput = document.querySelector('input[name="amount"]');
-  let newColor = colorInput.value;
-  let newAmount = amountInput.value;
-  let colors = generateShadeList(newColor, newAmount);
   let cssBlock = "";
+  let colors = handleInputValues();
+
   colors.forEach((color, index) => {
     cssBlock += `  --color-${index}: ${color}\n`;
   });
-  console.log(cssBlock);
+
   navigator.clipboard.writeText(cssBlock).then(() => {
     suddenNotify(`CSS code block copied!`);
   });
