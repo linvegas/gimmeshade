@@ -1,23 +1,11 @@
+import { qSel, qAll } from "./utils";
+
 const APP = document.querySelector("main#main");
 
-/** @param { string } selector */
-const qSel = (selector) => {
-  return document.querySelector(selector);
-};
-
-/** @param { string } selector */
-const qAll = (selector) => {
-  return document.querySelectorAll(selector);
-};
-
-function handleNewColor() {
-  const colorInput = document.querySelector('input[name="color"]');
-  let newColor = colorInput.value;
-  generateShadePannels(newColor);
-}
-
 /** @param {string} color
- *  @param {number} percent */
+ *  @param {number} percent
+ *  @returns {string}
+ *  */
 function colorShades(color, percent) {
   let red = parseInt(color.substring(1, 3), 16);
   let green = parseInt(color.substring(3, 5), 16);
@@ -64,15 +52,12 @@ function createPannel(color) {
   return pannel;
 }
 
-/** @param {string} color */
-function generateShadePannels(color) {
+/** @param {string} color
+ *  @param {number} amount
+ *  @returns {string[]}
+ *  */
+function generateShadeList(color, amount = 8) {
   let colorList = [];
-  let amount = 8;
-
-  let prevPannel = document.querySelector("div.pannel");
-  if (document.body.contains(prevPannel)) {
-    qAll("div.pannel").forEach((pannel) => pannel.remove());
-  }
 
   // Ligh shades
   for (let i = 0; i < amount; i++) {
@@ -86,8 +71,19 @@ function generateShadePannels(color) {
     colorList.unshift(hex);
   }
 
-  // return colorList;
-  colorList.forEach((color) => {
+  return colorList;
+}
+
+/** @param {string[]} colorlist
+ *  @returns {void}
+ *  */
+function generateShadePannels(colorlist) {
+  let prevPannel = document.querySelector("div.pannel");
+  if (document.body.contains(prevPannel)) {
+    qAll("div.pannel").forEach((pannel) => pannel.remove());
+  }
+
+  colorlist.forEach((color) => {
     let newPannel = createPannel(color);
     APP.appendChild(newPannel);
   });
@@ -99,9 +95,10 @@ function generateShadePannels(color) {
   });
 }
 
+/** @param {string} notification
+ *  @returns {void}
+ *  */
 function suddenNotify(notification) {
-  // const app = document.querySelector("main#main");
-
   /** @type {HTMLDialogElement} prevDialog */
   let prevDialog = document.querySelector("dialog");
   if (document.body.contains(prevDialog)) {
@@ -122,11 +119,39 @@ function suddenNotify(notification) {
   }, 2000);
 }
 
-function main() {
-  const formBtn = qSel("button.menu-generate-btn");
-  formBtn.addEventListener("click", handleNewColor);
+function handleGenShades() {
+  const colorInput = document.querySelector('input[name="color"]');
+  const amountInput = document.querySelector('input[name="amount"]');
+  let newColor = colorInput.value;
+  let newAmount = amountInput.value;
+  let colors = generateShadeList(newColor, newAmount);
+  generateShadePannels(colors);
+}
 
-  generateShadePannels("#c778dd");
+function handleGenCss() {
+  const colorInput = document.querySelector('input[name="color"]');
+  const amountInput = document.querySelector('input[name="amount"]');
+  let newColor = colorInput.value;
+  let newAmount = amountInput.value;
+  let colors = generateShadeList(newColor, newAmount);
+  let cssBlock = "";
+  colors.forEach((color, index) => {
+    cssBlock += `  --color-${index}: ${color}\n`;
+  });
+  console.log(cssBlock);
+  navigator.clipboard.writeText(cssBlock).then(() => {
+    suddenNotify(`CSS code block copied!`);
+  });
+}
+
+function main() {
+  const genBtn = qSel("button.menu-generate-btn");
+  genBtn.addEventListener("click", handleGenShades);
+
+  const cssBtn = qSel("button.menu-css-btn");
+  cssBtn.addEventListener("click", handleGenCss);
+
+  generateShadePannels(generateShadeList("#c778dd"));
 }
 
 window.onload = () => {
