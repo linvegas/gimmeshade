@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
     <main id="main">
       <div class="container">
-        <div class="menu">
+        <article class="menu">
           <label for="color">
             Color
             <input name="color" type="text" />
@@ -19,17 +20,21 @@
             Amount
             <input name="amount" type="number" />
           </label>
-          <div class="menu-btns">
-            <button title="Generate shaders" class="menu-generate-btn" type="submit">Generate</button>
+          <menu style="padding: 0;" class="menu-btns">
             <button
-              title="Create css variables for the shaders"
+              title="Generate shaders"
+              class="menu-generate-btn"
+              type="submit">
+              Generate
+            </button>
+            <button
+              title="Create CSS variables from the shaders"
               class="menu-css-btn"
-              type="button"
-            >
+              type="button">
               CSS
             </button>
-          </div>
-        </div>
+          </menu>
+        </article>
       </div>
     </main>
   </body>
