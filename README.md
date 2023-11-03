@@ -4,16 +4,14 @@ Web app that returns n amount of shades from a given color(hex).
 
 It also generates a css code block of color variables based on the shades results.
 
-## The 3 commands
+## Quick setup
 
-```bash
-npm install
+```console
+npm install && npm run dev
 ```
 
-```bash
-npm run dev
-```
+## Building
 
-```bash
+```console
 npm run build
 ```
